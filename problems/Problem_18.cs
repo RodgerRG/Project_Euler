@@ -20,55 +20,51 @@ namespace Project_Euler.problems
         public Problem_18() {
             currents = new List<Node>();
 
-            readGraph(currents);
+            readGraph();
         }
 
         public void solveProblem() {
-            //implement A* here.
-            List<Node> paths = new List<Node>();
-            Dictionary<Node, Int32> vals = new Dictionary<Node, int>();
+            List<Node> currentVals = getParents(currents);
             bool isOver = false;
-            int currentMax = root.getVal();
-            Node currentNode = root;
-
-            vals.Add(root, root.getVal());
-            int currentVal = root.getVal();
-
-            Console.WriteLine("Current Max: " + currentMax);
-            Console.WriteLine("Current Node: " + currentNode);
-
-            paths.Add(root);
 
             while(!isOver) {
-                Node at = paths.Find(node => node.id == currentNode.id);
-                Console.WriteLine(at.id);
-                vals.TryGetValue(at, out currentVal);
-
-                paths.Remove(at);
-
-                Console.WriteLine("Current Value: " + currentVal);
-
-                foreach(Node n in at.getChildren()) {
-                    //sort paths after this.
-                    paths.Add(n);
-                    vals.Add(n, currentVal + n.getVal());
-
-                    Console.WriteLine("Current Node Value: " + n.getVal());
-
-                    if(currentVal + n.getVal() > currentMax) {
-                        currentMax = currentVal + n.getVal();
-                        currentNode = n;
+                int currentMax;
+                foreach(Node parent in currentVals) {
+                    currentMax = parent.getVal();
+                    foreach(Node child in parent.getChildren()) {
+                        if(currentMax < parent.getVal() + child.getVal()) {
+                            currentMax = parent.getVal() + child.getVal();
+                        }
                     }
+
+                    parent.setVal(currentMax);
                 }
 
-                if(currentNode.getChildren().Count == 0) {
+                if(currentVals.Count == 1) {
+                    Console.WriteLine("The Maximum Value Is: " + currentVals[0].getVal());
                     isOver = true;
+                }
+
+                currentVals = getParents(currentVals);
+            }
+        }
+
+        private List<Node> getParents(List<Node> children) {
+            List<Node> parents = new List<Node>();
+            foreach(Node child in children) {
+                foreach(Node parent in child.getParents()) {
+                    if(!parents.Contains(parent)) {
+                        parents.Add(parent);
+                    }
                 }
             }
 
+            Console.WriteLine("The number of parents is: " + parents.Count);
+
+            return parents;
         }
 
-        private void readGraph(List<Node> currents) {
+        private void readGraph() {
             StreamReader reader = new StreamReader(new FileStream(System.IO.Directory.GetCurrentDirectory() + "/inputs/Problem_18", FileMode.Open));
             string raw = reader.ReadLine();
 
@@ -84,33 +80,62 @@ namespace Project_Euler.problems
                     vals[i] = Int32.Parse(inputs[i]);
                 }
 
-                parseInts(vals, currents);
+                parseInts(vals);
             }
         }
 
-        private void parseInts(int[] vals, List<Node> currents) {
+        private void parseInts(int[] vals) {
             List<Node> newNodes = new List<Node>();
-            for(int i = 0; i < currents.Count; i++) {
-                for(int j = i; j < i + 2; j++) {
-                    Node parent = currents[i];
-                    Node newNode = new Node(parent, vals[j], idCounter);
+
+            Node parent = currents[0];
+            List<Node> parents = new List<Node>();
+            parents.Add(parent);
+            Node newNode = new Node(parents, vals[0], idCounter);
+            idCounter++;
+
+            parent.addChild(newNode);
+
+            newNodes.Add(newNode);
+
+            for(int i = 1; i < vals.Length; i++) {
+                try {
+                    Node leftParent = currents[i - 1];
+                    Node rightParent = currents[i];
+                    parents = new List<Node>();
+
+                    parents.Add(leftParent);
+                    parents.Add(rightParent);
+
+                    newNode = new Node(parents, vals[i], idCounter);
                     idCounter++;
+
+                    leftParent.addChild(newNode);
+                    rightParent.addChild(newNode);
+
                     newNodes.Add(newNode);
-                    addConnection(parent, newNode);
+                } catch(ArgumentOutOfRangeException e) {
+                    parent = currents[i - 1];
+                    parents = new List<Node>();
+                    parents.Add(parent);
+                    newNode = new Node(parents, vals[i], idCounter);
+                    idCounter++;
+
+                    parent.addChild(newNode);
+
+                    newNodes.Add(newNode);
                 }
             }
-
             currents = newNodes;
         }
 
 
         public class Node {
-            private Node parent;
+            private List<Node> parent;
             private List<Node> children;
             private int value;
             public int id;
 
-            public Node(Node parent, int value, int id) {
+            public Node(List<Node> parent, int value, int id) {
                 this.parent = parent;
                 children = new List<Node>();
                 this.value = value;
@@ -118,7 +143,8 @@ namespace Project_Euler.problems
             }
 
             public Node(int value) {
-                this.parent = this;
+                this.parent = new List<Node>();
+                this.parent.Add(this);
                 children = new List<Node>();
                 this.value = value;
                 this.id = 1;
@@ -142,8 +168,16 @@ namespace Project_Euler.problems
                 return value;
             }
 
-            public Node getParent() {
+            public void setVal(int val) {
+                value = val;
+            }
+
+            public List<Node> getParents() {
                 return parent;
+            }
+
+            public Node getParent(int index) {
+                return parent[index];
             }
 
             public override string ToString() {
