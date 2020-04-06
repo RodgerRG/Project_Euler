@@ -4,7 +4,7 @@ using System.IO;
 using System;
 namespace Project_Euler.problems
 {
-    public class Problem_18
+    public class Problem_18_and_67
     {
         private Node root;
         private List<Node> currents;
