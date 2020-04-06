@@ -1,0 +1,11 @@
+E:\VS Code Projects\Project Euler\bin\Debug\netcoreapp3.0\Project Euler.exe
+E:\VS Code Projects\Project Euler\bin\Debug\netcoreapp3.0\Project Euler.deps.json
+E:\VS Code Projects\Project Euler\bin\Debug\netcoreapp3.0\Project Euler.runtimeconfig.json
+E:\VS Code Projects\Project Euler\bin\Debug\netcoreapp3.0\Project Euler.runtimeconfig.dev.json
+E:\VS Code Projects\Project Euler\bin\Debug\netcoreapp3.0\Project Euler.dll
+E:\VS Code Projects\Project Euler\bin\Debug\netcoreapp3.0\Project Euler.pdb
+E:\VS Code Projects\Project Euler\obj\Debug\netcoreapp3.0\Project Euler.csprojAssemblyReference.cache
+E:\VS Code Projects\Project Euler\obj\Debug\netcoreapp3.0\Project Euler.AssemblyInfoInputs.cache
+E:\VS Code Projects\Project Euler\obj\Debug\netcoreapp3.0\Project Euler.AssemblyInfo.cs
+E:\VS Code Projects\Project Euler\obj\Debug\netcoreapp3.0\Project Euler.dll
+E:\VS Code Projects\Project Euler\obj\Debug\netcoreapp3.0\Project Euler.pdb
