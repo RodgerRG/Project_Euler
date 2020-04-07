@@ -17,7 +17,7 @@ namespace Project_Euler.problems
             }
         }
 
-        public Problem_18() {
+        public Problem_18_and_67() {
             currents = new List<Node>();
 
             readGraph();
