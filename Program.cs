@@ -7,7 +7,7 @@ namespace Project_Euler
     {
         static void Main(string[] args)
         {
-            Problem_20.solveProblem();
+            Problem_21.solveProblem();
         }
     }
 }
