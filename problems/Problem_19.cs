@@ -8,19 +8,12 @@ namespace Project_Euler.problems
 
         public static void solveProblem() {
             int count = 0;
-            int yearDays;
 
             for(int i = 1901; i < 2000; i++) {
                 if((i % 4 == 0 && i % 100 != 0) || (i % 100 == 0 && i % 400 == 0)) {
                     isLeapYear = true;
                 } else {
                     isLeapYear = false;
-                }
-
-                if(isLeapYear) {
-                    yearDays = 366;
-                } else {
-                    yearDays = 365;
                 }
 
                 for(int month = 0; month < 12; month++) {

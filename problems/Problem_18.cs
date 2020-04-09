@@ -114,6 +114,7 @@ namespace Project_Euler.problems
 
                     newNodes.Add(newNode);
                 } catch(ArgumentOutOfRangeException e) {
+                    e.ToString();
                     parent = currents[i - 1];
                     parents = new List<Node>();
                     parents.Add(parent);
